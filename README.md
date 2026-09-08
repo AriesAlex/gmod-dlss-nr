@@ -73,7 +73,7 @@ bun run setup --target "D:\Games\GMod-RTX" --profile native --apply
 Ревизии исходников закреплены Git submodule gitlinks; `.gitmodules` содержит публичные upstream URL. Наши изменения хранятся отдельными полными патчами, включая новые файлы. Подготовка не делает reset и отказывается уничтожать посторонние правки:
 
 ```powershell
-git lfs pull
+git lfs fsck
 bun run sources:prepare
 bun run sources:verify
 bun run typecheck
