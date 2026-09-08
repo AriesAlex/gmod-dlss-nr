@@ -1,0 +1,91 @@
+{
+  "sourceBuild": {
+    "appId": 4000,
+    "buildId": "25110718",
+    "branch": "x86-64"
+  },
+  "files": [
+    {
+      "file": "engine.dll",
+      "purpose": "Select HDR map lighting and world-light data in Mod_LoadLighting and Mod_LoadWorldlights.",
+      "originalSha256": "f2360468ec084674c3f74f0f95feae55af56154c8a57d527fb27c3b31a48910b",
+      "patchedSha256": "e7db0455870e9967be7616847af7e37744d8974a7194f13096f2dd23b94facd2",
+      "spans": [
+        {
+          "offset": 1126929,
+          "before": "ff90b001",
+          "after": "b8020000"
+        },
+        {
+          "offset": 1126934,
+          "before": "00",
+          "after": "90"
+        },
+        {
+          "offset": 1129180,
+          "before": "ff90b001",
+          "after": "b8020000"
+        },
+        {
+          "offset": 1129185,
+          "before": "00",
+          "after": "90"
+        }
+      ]
+    },
+    {
+      "file": "shaderapidx9.dll",
+      "purpose": "Protect against zero-sized buffers, return early from the shader-constants routine, and bypass the invalid vertex-format Error() path.",
+      "originalSha256": "9ebf5ae93dfa3ce7973025989111845b0a313a5a9f238f706644194e609b2818",
+      "patchedSha256": "afa41ab1bd056abe0bbbf78ce0e3d479ac0c7519d2573c2ca7e731a85344c8fd",
+      "spans": [
+        {
+          "offset": 23524,
+          "before": "4833cce8e4e003",
+          "after": "85c0750466b804"
+        },
+        {
+          "offset": 38403,
+          "before": "75",
+          "after": "eb"
+        },
+        {
+          "offset": 63984,
+          "before": "4883ec",
+          "after": "31c0c3"
+        }
+      ]
+    },
+    {
+      "file": "materialsystem.dll",
+      "purpose": "Protect material-system buffer calculations against zero-sized buffers.",
+      "originalSha256": "31e9b7e7f3bfb8503dd346633fdf3985c93c8cc7bb7bd5fc70da8d270868bb5e",
+      "patchedSha256": "359a6ee947d0785dca77eca7bb74352f4c277599b43178a448435bac1adee28e",
+      "spans": [
+        {
+          "offset": 205286,
+          "before": "f77c24683bc10f4fc1488b8c24300100004833cce881ce04",
+          "after": "448b4424684585c0740341f7f839c80f4fc14881c4480100"
+        },
+        {
+          "offset": 205311,
+          "before": "48",
+          "after": "c3"
+        }
+      ]
+    },
+    {
+      "file": "datacache.dll",
+      "purpose": "Load dx90.vtx model vertex data by changing the dx80.vtx filename suffix.",
+      "originalSha256": "f0b6de94ca1955f5c326b7c5a55f8481c0a6dc8fb96e3fb930d0d20c0ef46b04",
+      "patchedSha256": "b2aa4eb7d2607f502b0f8ca4719940ff15a6af9a683c52032bd41202f3bb32d2",
+      "spans": [
+        {
+          "offset": 296875,
+          "before": "38",
+          "after": "39"
+        }
+      ]
+    }
+  ]
+}

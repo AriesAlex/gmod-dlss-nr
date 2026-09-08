@@ -1,0 +1,21 @@
+{
+  "name": "gmod-dlss-nr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "bun scripts/deploy.ts setup",
+    "verify": "bun scripts/deploy.ts verify",
+    "doctor": "bun scripts/deploy.ts doctor",
+    "fetch": "bun scripts/fetch-artifacts.ts",
+    "verify:artifacts": "bun scripts/fetch-artifacts.ts --verify-only",
+    "sources:prepare": "bun scripts/prepare-sources.ts",
+    "sources:verify": "bun scripts/prepare-sources.ts --verify-only",
+    "build:native": "pwsh -NoProfile -File scripts/build-native.ps1",
+    "build:legacy": "pwsh -NoProfile -File scripts/build-legacy.ps1",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.1",
+    "typescript": "7.0.2"
+  }
+}

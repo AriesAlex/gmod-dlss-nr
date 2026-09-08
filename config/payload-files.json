@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "file": "config/base/autoexec.cfg",
+      "sha256": "1E32D9C419FF3CD3F35454E3F0AAD5D973173789A6816220F221D1A620246900",
+      "sizeBytes": 567,
+      "source": "https://github.com/Xenthio/garrys-mod-rtx-remixed/blob/28820f30080adffef05a94527cc461a2dcc6658e/garrysmod/garrysmod/cfg/autoexec.cfg; current GMod integration settings; repeated commands normalized and QA-only sv_allowcslua removed"
+    },
+    {
+      "file": "config/base/dxvk.conf",
+      "sha256": "956FD3356BA33F9DA9F932479C903321E15B88FB1A714D5D512BBD05D29F6A36",
+      "sizeBytes": 1758,
+      "source": "https://github.com/Xenthio/garrys-mod-rtx-remixed/blob/28820f30080adffef05a94527cc461a2dcc6658e/garrysmod/dxvk.conf; current GMod integration settings; repeated keys normalized"
+    },
+    {
+      "file": "config/base/rtx.conf",
+      "sha256": "38FBABE3035E6ED82B136F81E0CAD777DDB065BC43D461665E6B58D288932D67",
+      "sizeBytes": 43120,
+      "source": "https://github.com/Xenthio/garrys-mod-rtx-remixed/blob/28820f30080adffef05a94527cc461a2dcc6658e/garrysmod/rtx.conf; current GMod integration and material settings; repeated keys normalized; profile-owned options separated into config/profiles"
+    },
+    {
+      "file": "config/base/user.conf",
+      "sha256": "F229A3DD2C945B3036BFBF21E12A725F20D3D1E1CD399D8401B39350E7145F07",
+      "sizeBytes": 567,
+      "source": "Current GMod quality settings; profile-owned Ray Reconstruction and Neural Rendering settings separated into config/profiles"
+    },
+    {
+      "file": "payload/bridge/bin/win64/dlss5-bridge.addon64",
+      "sha256": "31C51301E2267330F88FB31D0A5C799E20468136CE1EEE5FF88875ED6C5066CA",
+      "sizeBytes": 510464,
+      "source": "https://github.com/NIGos/dlss5-bridge/tree/28aed4099b0fe1c207b20b5fee5364c0773c25c2; patches/bridge.patch; verified local 1.4.12-gmod.1 build",
+      "license": "MIT; payload/bridge/licenses/dlss5-bridge.txt"
+    },
+    {
+      "file": "payload/bridge/bin/win64/dlss5-bridge.cfg",
+      "sha256": "F4BD59331F662425DC312D0EE4F0E64EFEB9BE6C4C55F628D586A190B02EA722",
+      "sizeBytes": 3587,
+      "source": "Validated GMod bridge settings for https://github.com/NIGos/dlss5-bridge/tree/28aed4099b0fe1c207b20b5fee5364c0773c25c2; patches/bridge.patch; verified local 1.4.12-gmod.1 build"
+    },
+    {
+      "file": "payload/bridge/bin/win64/renodx-dlss5.addon64",
+      "sha256": "87AEF9DDD937C7241E6BF8D8EFEA0045D63559135E254C60DAB316DB3D3A4AEE",
+      "sizeBytes": 391168,
+      "source": "Locally obtained RenoDX DLSS 5 provider 0.2026.0827.2036; upstream source unavailable. Bridge upstream identifies the provider distribution channel as https://discord.com/channels/1408098019194310818/1542647972695904317",
+      "license": "Redistribution terms not established"
+    },
+    {
+      "file": "payload/bridge/bin/win64/ReShade.ini",
+      "sha256": "1396BF32C6D2800717720132F4B9CD1564487BC969EBDEEBF040EDCF375B2F4F",
+      "sizeBytes": 1899,
+      "source": "Current GMod ReShade and RenoDX settings; machine-specific cache and window coordinates removed"
+    },
+    {
+      "file": "payload/bridge/bin/win64/ReShade64.dll",
+      "sha256": "3704E428D228AE4C9DA8AEE7B6B287BEBF5200556FA275C4C72B7BD42C75F742",
+      "sizeBytes": 5591040,
+      "source": "https://github.com/crosire/reshade/tree/18deaa52de0c425a78b329e9cb3c497281cd00ec; patches/reshade.patch; verified local Release build",
+      "license": "BSD-3-Clause; payload/bridge/licenses/ReShade.txt"
+    },
+    {
+      "file": "payload/bridge/bin/win64/VK_LAYER_reshade.json",
+      "sha256": "6D5A10100756A52C2F5C50BB16B0EF4B61776FDE6408951AEE517E0839561145",
+      "sizeBytes": 547,
+      "source": "GMod integration Vulkan layer manifest for the bundled custom ReShade64.dll"
+    },
+    {
+      "file": "payload/bridge/licenses/dlss5-bridge.txt",
+      "sha256": "813B2964A4AB9AA6C41E00C7094A389D61FEEB918FCF690CB9B3E454B678770E",
+      "sizeBytes": 1062,
+      "source": "https://github.com/NIGos/dlss5-bridge/blob/28aed4099b0fe1c207b20b5fee5364c0773c25c2/LICENSE",
+      "license": "MIT"
+    },
+    {
+      "file": "payload/bridge/licenses/ReShade.txt",
+      "sha256": "237DED5B8344F820113EFAB1E65E91E1F159D9202C5B4856606A0590D3FFDAB0",
+      "sizeBytes": 1481,
+      "source": "https://github.com/crosire/reshade/blob/18deaa52de0c425a78b329e9cb3c497281cd00ec/LICENSE.md",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "file": "payload/common/bin/win64/nvngx_dlssnr.dll",
+      "sha256": "E16BCF15E16E13F527491CDF7845B2FE6521A738D8F7C9C721866A8496E1FC8E",
+      "sizeBytes": 165840496,
+      "source": "NVIDIA-signed DLSS Neural Rendering runtime 310.8.0.0, copied from the validated local GMod stack; original distribution URL unestablished",
+      "license": "Proprietary NVIDIA runtime; redistribution terms not established"
+    },
+    {
+      "file": "payload/common/garrysmod/addons/remixbinary/lua/autorun/cl_rtx.lua",
+      "sha256": "294D185192F6C1FF7EEAF26223FE81777CE8A782CF7C893725E0FE41F0D279D9",
+      "sizeBytes": 7762,
+      "source": "https://github.com/Xenthio/garrys-mod-rtx-remixed/tree/28820f30080adffef05a94527cc461a2dcc6658e; current GMod DLSS NR integration settings; exact final autorun overlay including hardware-skinning restore and model reload fixes; trailing whitespace normalized"
+    },
+    {
+      "file": "payload/native/bin/win64/d3d9.dll",
+      "sha256": "9355AC2E33882FE4480D098DB5D056F079116A96508D03D586DBCAFFD818D3B6",
+      "sizeBytes": 291180032,
+      "source": "https://github.com/sambow23/dxvk-remix-gmod/tree/12759b3e164f4f422076d8fc921d67c465b8ddeb; sources/remix with patches/remix.patch; native NR imported from https://github.com/lunks/dxvk-remix-plus-dlssnr/commit/fc4de144b38e3af508ed99a99864d0a6dc26fa35"
+    },
+    {
+      "file": "payload/native/bin/win64/remix_nvngx.dll",
+      "sha256": "BFB8DC5B7F3843A45F833A5875F5D43565972AC484B24D0C5BBB2A8A0CF73B17",
+      "sizeBytes": 13824,
+      "source": "https://github.com/sambow23/dxvk-remix-gmod/tree/12759b3e164f4f422076d8fc921d67c465b8ddeb; sources/remix with patches/remix.patch; native NR imported from https://github.com/lunks/dxvk-remix-plus-dlssnr/commit/fc4de144b38e3af508ed99a99864d0a6dc26fa35; exact shim source: sources/remix/src/dlssnr_shim/remix_nvngx.cpp"
+    }
+  ]
+}

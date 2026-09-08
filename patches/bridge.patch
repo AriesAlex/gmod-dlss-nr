@@ -1,0 +1,125 @@
+diff --git a/src/build.cmd b/src/build.cmd
+index 81ab78a0a7e48853fdb12ee0407f2ef7a2254d0c..4ea6dd8550a65db5d429acb0f747d79465f5330d 100644
+--- a/src/build.cmd
++++ b/src/build.cmd
+@@ -1,13 +1,15 @@
+ @echo off
+-rem dlss5-bridge -- build. The exact line the README quotes; kept here because it
+-rem has been retyped by hand once too often and lost a flag each time.
++rem Build the x64 ReShade addon with the installed Visual C++ toolchain.
+ setlocal
+-set VCVARS=C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat
++if not defined VCVARS (
++  for /f "usebackq delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC\Auxiliary\Build\vcvars64.bat`) do set "VCVARS=%%i"
++)
+ if not exist "%VCVARS%" (
+   echo build.cmd: no vcvars64.bat at "%VCVARS%"
+   exit /b 1
+ )
+-call "%VCVARS%" >nul 2>&1
++call "%VCVARS%" >nul
++if errorlevel 1 exit /b 1
+ cd /d "%~dp0"
+ 
+ rc /nologo version.rc
+diff --git a/src/dlss5-bridge.cpp b/src/dlss5-bridge.cpp
+index f1337f31cfe3b42a950cb3df2fc83d2190ec5506..b68b71b71360ce7d20824ec2dcac794a9714b3e2 100644
+--- a/src/dlss5-bridge.cpp
++++ b/src/dlss5-bridge.cpp
+@@ -61,7 +61,7 @@
+ #pragma comment(lib, "version.lib")
+ 
+ // Kept in step with version.rc, which is where ReShade's overlay reads it from.
+-#define BRIDGE_VERSION "1.4.12"
++#define BRIDGE_VERSION "1.4.12-gmod.1"
+ 
+ extern "C" __declspec(dllexport) const char *NAME =
+     "DLSS 5 Bridge " BRIDGE_VERSION;
+diff --git a/src/version.rc b/src/version.rc
+index 0ba576497ebbc4b0e84f33867bffe925f81b2611..4d3ce48e94479c11282f05c030d9b2bef7654cde 100644
+--- a/src/version.rc
++++ b/src/version.rc
+@@ -3,8 +3,8 @@
+ // ReShade reads the add-on's version from here and shows it in its overlay, so
+ // a bug report can name the exact build instead of describing it.
+ VS_VERSION_INFO VERSIONINFO
+- FILEVERSION    1,4,12,0
+- PRODUCTVERSION 1,4,12,0
++ FILEVERSION    1,4,12,1
++ PRODUCTVERSION 1,4,12,1
+  FILEOS         VOS_NT_WINDOWS32
+  FILETYPE       VFT_DLL
+ BEGIN
+@@ -12,12 +12,12 @@ BEGIN
+     BEGIN
+         BLOCK "040904b0"
+         BEGIN
+-            VALUE "FileDescription",  "DLSS 5 Bridge"
+-            VALUE "FileVersion",      "1.4.12.0"
++            VALUE "FileDescription",  "DLSS 5 Bridge - GMod startup fix"
++            VALUE "FileVersion",      "1.4.12-gmod.1"
+             VALUE "InternalName",     "dlss5-bridge"
+             VALUE "OriginalFilename", "dlss5-bridge.addon64"
+             VALUE "ProductName",      "DLSS 5 Bridge"
+-            VALUE "ProductVersion",   "1.4.12.0"
++            VALUE "ProductVersion",   "1.4.12-gmod.1"
+         END
+     END
+     BLOCK "VarFileInfo"
+diff --git a/src/vkmirror.inc b/src/vkmirror.inc
+index 8f21f435262b627b8445c215bc975e96205d6312..f5df6ed62b0896c96184cc38e815941bfbc35333 100644
+--- a/src/vkmirror.inc
++++ b/src/vkmirror.inc
+@@ -241,6 +241,7 @@ static const DWORD kVkmIdleMs      = kVkmSeeCopiesMs + kVkmEvaluateMs + 200;
+ 
+ struct VkMirror
+ {
++    ULONGLONG first_evaluate;
+     bool    refused;     // and refused, or something later stood the mirror down
+     // NOT the same thing as refused, and conflating the two retired the mirror
+     // for the session every time a game changed display mode. ReShade destroys
+@@ -1133,6 +1134,17 @@ static bool VkmEnsureEvents()
+ // be replaced.
+ static void VkMirrorFrame(void *cmd_raw, const NVSDK_NGX_Parameter *gp)
+ {
++    // GMod can fault in studiorender when the private NR session is opened
++    // during map initialization. Let its own DLSS run first. Both this path
++    // and the reset in VkmNoteGameCreate hold g_bridge_cs.
++    const ULONGLONG now = GetTickCount64();
++    if (g_vkm.first_evaluate == 0)
++    {
++        g_vkm.first_evaluate = now;
++        Log("[vkmirror] GMod: warming up on game DLSS for 5 seconds before NR");
++    }
++    if (now - g_vkm.first_evaluate < 5000) return;
++
+     // stage is a D3D11 word in the documentation and has grown two more meanings
+     // since: below 3 the synthetic contract refuses, and below 2 the mirror does
+     // not record a frame at all. The synthetic side says so twice; this returned
+@@ -1153,6 +1165,18 @@ static void VkMirrorFrame(void *cmd_raw, const NVSDK_NGX_Parameter *gp)
+     }
+     if (g_vkm.refused || g_vkm.stopping) return;
+ 
++    // DLFG resets its own history on a camera cut. Parking that same reset
++    // command buffer behind the private D3D12 evaluate creates a queue cycle:
++    // the DLFG pacer waits for the reset submission while the submission waits
++    // for this mirror's host event. Let the game's already-forwarded DLSS result
++    // through for the reset frame and resume neural rendering on the next one.
++    int reset = 0;
++    if (gp != nullptr && gp->Get("Reset", &reset) == NGX_SUCCESS && reset != 0)
++    {
++        Log("[vkmirror] DLSS reset frame forwarded without mirroring so DLFG can reset its history");
++        return;
++    }
++
+     if (g_vkm_rt == nullptr)
+     {
+         if (!g_vkm.said_no_runtime)
+@@ -1939,6 +1963,7 @@ static void VkmNoteGameCreate(int feature_id, NVSDK_NGX_Result r,
+     // line has to tell them apart or it reports a handover that did not happen --
+     // the source did not change, the game replaced its own feature.
+     g_vkm.rebuild_on_game_create = true;
++    g_vkm.first_evaluate = 0;
+     LeaveCriticalSection(&g_bridge_cs);
+ }
+ 

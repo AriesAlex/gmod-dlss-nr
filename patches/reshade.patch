@@ -1,0 +1,41 @@
+diff --git a/source/runtime.hpp b/source/runtime.hpp
+index 5c204b202c4eecc5b361d27539b0c96afb2eaeed..1c18f3aca79bbd5349786fe8c81212c637f29700 100644
+--- a/source/runtime.hpp
++++ b/source/runtime.hpp
+@@ -420,6 +420,7 @@ namespace reshade
+ 		ImGuiContext *_imgui_context = nullptr;
+ 
+ 		bool _show_splash = true;
++		bool _hide_splash = false;
+ 		bool _show_overlay = false;
+ 		unsigned int _show_fps = 2;
+ 		unsigned int _show_clock = false;
+diff --git a/source/runtime_gui.cpp b/source/runtime_gui.cpp
+index 3217ae06ea80c35db924253543b8993fd32f0b51..32b3e8f02df72a439446de7b06ce720e17d51dc7 100644
+--- a/source/runtime_gui.cpp
++++ b/source/runtime_gui.cpp
+@@ -312,6 +312,7 @@ void reshade::runtime::load_config_gui(const ini_file &config)
+ 	config.get("OVERLAY", "ShowFPS", _show_fps);
+ 	config.get("OVERLAY", "ShowFrameTime", _show_frametime);
+ 	config.get("OVERLAY", "ShowPresetName", _show_preset_name);
++	config.get("OVERLAY", "HideSplash", _hide_splash);
+ 	config.get("OVERLAY", "ShowScreenshotMessage", _show_screenshot_message);
+ 	if (!global_config().get("OVERLAY", "TutorialProgress", _tutorial_index))
+ 		config.get("OVERLAY", "TutorialProgress", _tutorial_index);
+@@ -413,6 +414,7 @@ void reshade::runtime::save_config_gui(ini_file &config) const
+ 	config.set("OVERLAY", "ShowFPS", _show_fps);
+ 	config.set("OVERLAY", "ShowFrameTime", _show_frametime);
+ 	config.set("OVERLAY", "ShowPresetName", _show_preset_name);
++	config.set("OVERLAY", "HideSplash", _hide_splash);
+ 	config.set("OVERLAY", "ShowScreenshotMessage", _show_screenshot_message);
+ 	global_config().set("OVERLAY", "TutorialProgress", _tutorial_index);
+ 	config.set("OVERLAY", "TutorialProgress", _tutorial_index);
+@@ -802,7 +804,7 @@ void reshade::runtime::draw_gui()
+ 	if (show_overlay != _show_overlay)
+ 		open_overlay(show_overlay, show_overlay_source);
+ 
+-	const bool show_splash_window = _show_splash && (is_loading() || (_reload_count <= 1 && (_last_present_time - _last_reload_time) < std::chrono::seconds(5)) || (!_show_overlay && _tutorial_index == 0 && _input != nullptr));
++	const bool show_splash_window = !_hide_splash && _show_splash && (is_loading() || (_reload_count <= 1 && (_last_present_time - _last_reload_time) < std::chrono::seconds(5)) || (!_show_overlay && _tutorial_index == 0 && _input != nullptr));
+ 
+ 	// Do not show this message in the same frame the screenshot is taken (so that it won't show up on the GUI screenshot)
+ 	const bool show_screenshot_message = (_show_screenshot_message || !_last_screenshot_save_successful) && !_should_save_screenshot && (_last_present_time - _last_screenshot_time) < std::chrono::seconds(_last_screenshot_save_successful ? 3 : 5);

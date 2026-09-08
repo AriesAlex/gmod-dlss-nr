@@ -1,0 +1,12 @@
+[submodule "sources/remix"]
+	path = sources/remix
+	url = https://github.com/sambow23/dxvk-remix-gmod.git
+[submodule "sources/reshade"]
+	path = sources/reshade
+	url = https://github.com/crosire/reshade.git
+[submodule "sources/bridge"]
+	path = sources/bridge
+	url = https://github.com/NIGos/dlss5-bridge.git
+[submodule "sources/fixes"]
+	path = sources/fixes
+	url = https://github.com/Xenthio/garrys-mod-rtx-remixed.git

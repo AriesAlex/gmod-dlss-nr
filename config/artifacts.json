@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "artifacts": [
+    {
+      "id": "gmod-rtx",
+      "file": "gmod-rtx.zip",
+      "url": "https://github.com/Xenthio/garrys-mod-rtx-remixed/releases/download/nightly/garrys-mod-rtx-remixed-nightly-28820f3.zip",
+      "sha256": "96E398B82382CD84C7F89DC1866E5759C07CFE2A0DBE100CB9DDD40F0BF63FFB",
+      "sizeBytes": 63318297,
+      "extract": {
+        "destination": "game",
+        "stripPrefix": ""
+      }
+    },
+    {
+      "id": "remix",
+      "file": "remix.zip",
+      "url": "https://github.com/sambow23/dxvk-remix-gmod/releases/download/nightly/dxvk-remix-gmod-nightly.zip",
+      "sha256": "997747227BFD809434D3B264C2FA9FA0DA3CD63773A2DFADABE90E5B1ECEB12C",
+      "sizeBytes": 292727515,
+      "extract": {
+        "destination": "game/bin/win64",
+        "stripPrefix": ".trex/"
+      }
+    },
+    {
+      "id": "usda-fixes",
+      "file": "usda-fixes.zip",
+      "url": "https://github.com/sambow23/rtx-usda-fixes/archive/15c3e13ead6efde8639f1536fec1960e969871d8.zip",
+      "sha256": "ED6246C441C491DE5D28B7AA740BDDABF888CFD021D835E5A11E1D3DE3AF3FED",
+      "sizeBytes": 4660665,
+      "extract": {
+        "destination": "cache/usda-fixes",
+        "stripPrefix": "rtx-usda-fixes-15c3e13ead6efde8639f1536fec1960e969871d8/"
+      }
+    }
+  ]
+}
